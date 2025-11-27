@@ -1,0 +1,14 @@
+# Виртуальное окружение
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+
+# Зависимости
+.env
+*.env
+
