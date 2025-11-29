@@ -61,7 +61,7 @@ async def process_comment(message: Message, state: FSMContext):
     data = await state.get_data()
     await message.answer(
         f"✅ **Анкета создана!**\n\n"
-        f"** USERNAME: {username}\n"
+        f"👤 **USERNAME: {username}\n"
         f"👤 **Имя:** {data['name']}\n"
         f"🕐 **Дата и время:** {data['time']}\n"
         f"📍 **Откуда:** {data['from_place']}\n"
