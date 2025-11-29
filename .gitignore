@@ -11,4 +11,4 @@ env/
 # Зависимости
 .env
 *.env
-
+visits.db
