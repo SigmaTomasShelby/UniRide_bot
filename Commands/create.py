@@ -4,6 +4,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import Message
 from aiogram import types
+import sqlite3
 
 router = Router()
 
@@ -69,4 +70,28 @@ async def process_comment(message: Message, state: FSMContext):
         f"💬 **Комментарий:** {data['comment']}",
         parse_mode="Markdown"
     )
+    await state.clear()
+
+    #добавление в БД
+    try:
+        conn = sqlite3.connect('visits.db')
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO visits (username, name, time_of_start, place_of_departure, 
+                              place_of_arrival, cost, comment)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (
+            username,
+            data['name'],
+            data['time'],
+            data['from_place'],
+            data['to_place'],
+            data['cost'],
+            data['comment']
+        ))
+        conn.commit()
+        conn.close()
+    except sqlite3.Error as e:
+        print(f"Ошибка БД: {e}")
+    
     await state.clear()
