@@ -5,6 +5,7 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import Message
 from aiogram import types
 import sqlite3
+from application.checker import Checker as Checker
 
 router = Router()
 
@@ -25,11 +26,22 @@ async def cmd_create(message: Message, state: FSMContext):
 async def process_name(message: Message, state: FSMContext):
     await state.update_data(name=message.text)
     await state.set_state(TripForm.time)
-    await message.answer("🕐 Введите дату и время поездки через пробел(например, 28.11.25 18:30):")
+    await message.answer("🕐 Введите дату и время поездки через пробел(например, 31.11.25 18:30):")
 
 @router.message(TripForm.time)
 async def process_time(message: Message, state: FSMContext):
-    await state.update_data(time=message.text)
+    date_str = message.text.strip()
+    
+    if not Checker.check_date(date_str):
+        await message.answer(
+            "❌ **Неверная дата или время в прошлом!**\n"
+            "🕐 Введите дату и время поездки в будущем:\n"
+            "Формат: `28.11.26 18:30`",
+            parse_mode="Markdown"
+        )
+        return
+    
+    await state.update_data(time=date_str)
     await state.set_state(TripForm.from_place)
     await message.answer("📍 Откуда вы едете?")
 
