@@ -75,7 +75,7 @@ async def process_to_place(message: Message, state: FSMContext):
     ) in offers:
         text_lines.append(
             "🚗 Найдена заявка:\n"
-            f"👤 Имя: {name} (@{username})\n"
+            f"👤 Имя: {name} ({username})\n"
             f"🕐 Время отправления: {time_of_start}\n"
             f"📍 Откуда: {place_of_departure}\n"
             f"📍 Куда: {place_of_arrival}\n"
